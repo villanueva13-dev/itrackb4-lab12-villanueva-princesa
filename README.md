@@ -60,3 +60,14 @@ An ordinary HTML link sends a GET request. Laravel matches the GET request to th
 ### G3. Why is `old('title', $book->title)` better than using only `old('title')`?
 
 The `old()` function retrieves the previously entered value after validation fails. The second argument, `$book->title`, provides the existing title when the edit page first loads. This ensures that the form displays the saved information instead of appearing blank.
+
+## Part H – Reflection Questions
+
+### 1. Understanding the Exception
+The top file in the error trace belongs to Laravel's framework, which handles the method call. However, the actual mistake was in my `BookController.php` file, specifically in the `index()` method, where I accidentally used `Book::withh('genre')` instead of `Book::with('genre')`.
+
+### 2. Logging and Debugging
+Using `Log::info()` with the book ID helps identify which book record was saved or updated. Unlike an error page, the log keeps a record that can help developers track application activities and investigate problems.
+
+### 3. Handling Errors
+A 403 error is appropriate when a user is not allowed to perform an action, such as deleting the last book in a genre. A redirect with a message is more suitable for ordinary recoverable form or input errors because the user can correct the information and try again.

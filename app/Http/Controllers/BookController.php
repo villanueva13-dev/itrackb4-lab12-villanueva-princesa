@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Genre;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 
 class BookController extends Controller
@@ -62,6 +63,7 @@ public function update(Request $request, Book $book)
     ]);
 
     $book->update($validated);
+    Log::info('Book saved', ['id' => $book->id]);
 
     return redirect()->route('books.index')
         ->with('success', 'Book updated successfully!');
@@ -69,6 +71,8 @@ public function update(Request $request, Book $book)
 
 public function destroy(Book $book)
 {
+    abort_if($book->genre->books()->count() === 1, 403);
+
     $book->delete();
 
     return redirect()->route('books.index')
